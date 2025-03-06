@@ -53,3 +53,5 @@ if __name__ == "__main__":
         print(f"予期せぬエラーが発生しました: {e}")
         # 静的ファイルを提供するための設定
         app.use(express.static('public'))
+
+        
