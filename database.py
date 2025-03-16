@@ -3,10 +3,10 @@ from models import db
 
 def init_db(app: Flask):
     """
-    データベースを初期化する関数
+    データベースを新しく作成する関数
     
     Args:
-        app: Flaskアプリケーションインスタンス
+        app: Flaskアプリケーション
     """
     with app.app_context():
         db.create_all()
@@ -17,7 +17,7 @@ def setup_db(app: Flask):
     データベースの設定を行う関数
     
     Args:
-        app: Flaskアプリケーションインスタンス
+        app: Flaskアプリケーション
     """
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/users.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
