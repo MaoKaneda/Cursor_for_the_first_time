@@ -1,37 +1,46 @@
-# 必要なライブラリをインポート（他のプログラムの部品を取り込む）
-from flask import Flask
-from flask_jwt_extended import JWTManager
-from auth import auth
-from database import setup_db
-import os
-from datetime import timedelta
+# 必要なツールを集める（料理で言えば、必要な調理器具を集めるようなもの）
+from flask import Flask  # Webアプリを作るための主要な道具
+from flask_jwt_extended import JWTManager  # ログイン機能を作るための道具
+from auth import auth  # ユーザー登録とログインの機能
+from database import setup_db  # データベース（情報を保存する倉庫）の設定
+import os  # パソコンの設定を読み取るための道具
+from datetime import timedelta  # 時間を計算するための道具
 
 def create_app():
-    """Webアプリケーションを作成する関数"""
-    # Flaskアプリケーションを新しく作る
+    """
+    Webアプリケーションを作る関数
+    （お店を開くための準備をするようなもの）
+    """
+    # お店（Webアプリ）を新しく開く
     app = Flask(__name__)
     
-    # ログイン機能のための秘密鍵を設定
-    # 環境変数から取得するか、なければ'your-secret-key'を使う
+    # ログインのための特別な鍵を設定
+    # （お店の鍵のようなもの。これがないと安全に開けない）
+    # 環境設定から鍵を探して、なければ仮の鍵を使う
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'your-secret-key')
-    # ログイン状態を1時間で切れるように設定
+    
+    # ログイン状態の有効期限を1時間に設定
+    # （1時間たったら、もう一度ログインが必要）
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
     
-    # データベースの設定を行う
+    # データベース（お客さんの情報を保存する本棚）の設定
     setup_db(app)
     
-    # ログイン機能を使えるようにする
+    # ログインシステムを使えるようにする
+    # （入館証を確認する警備員さんを配置するようなもの）
     jwt = JWTManager(app)
     
-    # ログインや会員登録の機能をアプリケーションに追加
+    # ログインと会員登録の機能をアプリに追加
+    # （受付係さんを配置するようなもの）
     app.register_blueprint(auth)
     
     return app
 
-# アプリケーションを作成
+# お店（Webアプリ）を実際に作る
 app = create_app()
 
-# このファイルを直接実行したときの処理
+# このプログラムを直接実行したときの処理
 if __name__ == '__main__':
-    # デバッグモードでアプリケーションを起動
+    # お店を開く（デバッグモードで起動）
+    # デバッグモードとは、問題が起きたときに詳しく教えてくれるモード
     app.run(debug=True) 
